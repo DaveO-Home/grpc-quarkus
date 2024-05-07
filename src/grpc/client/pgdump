@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+pg_dump -U dodex dodex > postgresql.dmp
+

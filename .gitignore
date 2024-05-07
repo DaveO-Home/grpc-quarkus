@@ -1,0 +1,20 @@
+quarkus
+.project
+.classpath
+.settings/
+bin/
+*.db
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+# Visual Studio Code
+.vscode
+# Gradle
+.gradle/
+build/
+copyjs.sh
+deploy
+GenCopy
+

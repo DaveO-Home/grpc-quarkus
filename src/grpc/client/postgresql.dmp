@@ -1,0 +1,445 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.3
+-- Dumped by pg_dump version 14.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: course_id_seq; Type: SEQUENCE; Schema: public; Owner: dodex
+--
+
+CREATE SEQUENCE public.course_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.course_id_seq OWNER TO dodex;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: course; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.course (
+    course_seq integer DEFAULT nextval('public.course_id_seq'::regclass) NOT NULL,
+    course_name character varying(128) NOT NULL,
+    course_country character varying(128) NOT NULL,
+    course_state character(2) NOT NULL
+);
+
+
+ALTER TABLE public.course OWNER TO dodex;
+
+--
+-- Name: golfer; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.golfer (
+    pin character varying(8) NOT NULL,
+    first_name character varying(32) NOT NULL,
+    last_name character varying(32) NOT NULL,
+    handicap real DEFAULT 0.0,
+    country character(2) DEFAULT 'US'::bpchar NOT NULL,
+    state character(2) DEFAULT 'NV'::bpchar NOT NULL,
+    overlap_years boolean DEFAULT false,
+    public boolean DEFAULT false,
+    last_login bigint
+);
+
+
+ALTER TABLE public.golfer OWNER TO dodex;
+
+--
+-- Name: login_id_seq; Type: SEQUENCE; Schema: public; Owner: dodex
+--
+
+CREATE SEQUENCE public.login_id_seq
+    START WITH 19
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.login_id_seq OWNER TO dodex;
+
+--
+-- Name: login; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.login (
+    id integer DEFAULT nextval('public.login_id_seq'::regclass) NOT NULL,
+    name character varying(255),
+    password character varying(255),
+    last_login timestamp with time zone
+);
+
+
+ALTER TABLE public.login OWNER TO dodex;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: dodex
+--
+
+CREATE SEQUENCE public.messages_id_seq
+    START WITH 4
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.messages_id_seq OWNER TO dodex;
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.messages (
+    id integer DEFAULT nextval('public.messages_id_seq'::regclass) NOT NULL,
+    message text,
+    from_handle character varying(255),
+    post_date timestamp with time zone
+);
+
+
+ALTER TABLE public.messages OWNER TO dodex;
+
+--
+-- Name: ratings; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.ratings (
+    course_seq integer NOT NULL,
+    tee integer NOT NULL,
+    tee_color character varying(16),
+    tee_rating real NOT NULL,
+    tee_slope integer NOT NULL,
+    tee_par integer DEFAULT 72 NOT NULL
+);
+
+
+ALTER TABLE public.ratings OWNER TO dodex;
+
+--
+-- Name: scores; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.scores (
+    pin character varying(8) NOT NULL,
+    gross_score integer NOT NULL,
+    net_score real,
+    adjusted_score integer NOT NULL,
+    tee_time text NOT NULL,
+    handicap real,
+    course_seq integer,
+    course_tees integer,
+    used character(1)
+);
+
+
+ALTER TABLE public.scores OWNER TO dodex;
+
+--
+-- Name: undelivered; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.undelivered (
+    user_id integer,
+    message_id integer
+);
+
+
+ALTER TABLE public.undelivered OWNER TO dodex;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: dodex
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 19
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO dodex;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: dodex
+--
+
+CREATE TABLE public.users (
+    id integer DEFAULT nextval('public.users_id_seq'::regclass) NOT NULL,
+    name character varying(255),
+    password character varying(255),
+    ip character varying(255),
+    last_login timestamp with time zone
+);
+
+
+ALTER TABLE public.users OWNER TO dodex;
+
+--
+-- Data for Name: course; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.course (course_seq, course_name, course_country, course_state) FROM stdin;
+31	Eagle Valley	US	NV
+32	Eagle Valley East	US	NV
+\.
+
+
+--
+-- Data for Name: golfer; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.golfer (pin, first_name, last_name, handicap, country, state, overlap_years, public, last_login) FROM stdin;
+do1234	Dave	O&#39;Meara	0	US	AL	f	t	1671747470111
+\.
+
+
+--
+-- Data for Name: login; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.login (id, name, password, last_login) FROM stdin;
+19	daveo	-1561578177	2022-12-20 13:11:20.250162-08
+\.
+
+
+--
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.messages (id, message, from_handle, post_date) FROM stdin;
+4	Some more	brave🍰	2022-08-15 17:16:36.482505-07
+\.
+
+
+--
+-- Data for Name: ratings; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.ratings (course_seq, tee, tee_color, tee_rating, tee_slope, tee_par) FROM stdin;
+31	2	#FFFFFF	72	120	72
+32	2	#FFFFFF	70.3	118	72
+\.
+
+
+--
+-- Data for Name: scores; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.scores (pin, gross_score, net_score, adjusted_score, tee_time, handicap, course_seq, course_tees, used) FROM stdin;
+do1234	72	72	72	2022-12-21T19:36	0	31	2	\N
+do1234	72	72	72	2022-12-21T05:10	0	31	2	\N
+do1234	72	72	72	2022-12-21T06:10	0	31	2	\N
+do1234	72	72	72	2022-12-21T06:12	0	31	2	\N
+do1234	72	72	72	2022-12-21T06:20	0	31	2	\N
+do1234	80	80	80	2022-12-22T21:00	0	31	2	\N
+do1234	72	72	72	2022-12-21T05:06	0	31	2	*
+do1234	72	72	72	2022-12-21T03:06	0	31	2	*
+do1234	75	75	75	2022-12-22T21:14	0	31	2	\N
+\.
+
+
+--
+-- Data for Name: undelivered; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.undelivered (user_id, message_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: dodex
+--
+
+COPY public.users (id, name, password, ip, last_login) FROM stdin;
+19	firefox🍟	MDYwNTA0MDMtMDMwMi00NTA4LTg2MDEtMDMwMTA4MDMwMDA1	127.0.0.1:44976	2022-08-15 17:17:02.709096-07
+20	brave🍰	MDcwOTA4MDEtMDQwMy00MTAwLTg5MDEtMDYwMzA3MDUwMTA0	0:0:0:0:0:0:0:1:44226	2022-08-15 17:17:04.490333-07
+21	braveit🍰	MDQwNzA3MDktMDAwNC00OTAxLTg1MDktMDAwMDAyMDMwOTAz	0:0:0:0:0:0:0:1:37100	2022-11-12 16:59:21.959474-08
+22	brave🙃	MDMwMzA5MDUtMDAwNi00MzAyLTg1MDMtMDQwODAxMDIwOTA0	127.0.0.1:58968	2022-12-17 13:05:31.881756-08
+\.
+
+
+--
+-- Name: course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dodex
+--
+
+SELECT pg_catalog.setval('public.course_id_seq', 32, true);
+
+
+--
+-- Name: login_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dodex
+--
+
+SELECT pg_catalog.setval('public.login_id_seq', 19, true);
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dodex
+--
+
+SELECT pg_catalog.setval('public.messages_id_seq', 4, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dodex
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 22, true);
+
+
+--
+-- Name: course course_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.course
+    ADD CONSTRAINT course_pkey PRIMARY KEY (course_seq);
+
+
+--
+-- Name: golfer golfer_names_unique; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.golfer
+    ADD CONSTRAINT golfer_names_unique UNIQUE (last_name, first_name);
+
+
+--
+-- Name: golfer golfer_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.golfer
+    ADD CONSTRAINT golfer_pkey PRIMARY KEY (pin);
+
+
+--
+-- Name: login login_name_unique; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT login_name_unique UNIQUE (name);
+
+
+--
+-- Name: login login_password_unique; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT login_password_unique UNIQUE (password);
+
+
+--
+-- Name: login login_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT login_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ratings ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (course_seq, tee);
+
+
+--
+-- Name: users users_name_unique; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_name_unique UNIQUE (name);
+
+
+--
+-- Name: users users_password_unique; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_unique UNIQUE (password);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ratings fk_course_ratings; Type: FK CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.ratings
+    ADD CONSTRAINT fk_course_ratings FOREIGN KEY (course_seq) REFERENCES public.course(course_seq);
+
+
+--
+-- Name: scores fk_course_scores; Type: FK CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.scores
+    ADD CONSTRAINT fk_course_scores FOREIGN KEY (course_seq) REFERENCES public.course(course_seq);
+
+
+--
+-- Name: scores fk_golfer_scores; Type: FK CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.scores
+    ADD CONSTRAINT fk_golfer_scores FOREIGN KEY (pin) REFERENCES public.golfer(pin);
+
+
+--
+-- Name: undelivered undelivered_message_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.undelivered
+    ADD CONSTRAINT undelivered_message_id_foreign FOREIGN KEY (message_id) REFERENCES public.messages(id);
+
+
+--
+-- Name: undelivered undelivered_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: dodex
+--
+
+ALTER TABLE ONLY public.undelivered
+    ADD CONSTRAINT undelivered_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

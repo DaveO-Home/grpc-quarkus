@@ -1,0 +1,99 @@
+
+plugins {
+    id 'java'
+    id "org.jetbrains.kotlin.jvm" version "1.9.23"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.9.23"
+    id "io.quarkus"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    vertxVersion = "4.5.7"
+    javaMainClass = "dmo.fs.db.handicap.utils.JooqGenerate"
+}
+
+dependencies {
+    implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "io.vertx:vertx-rx-java3:$vertxVersion"
+    implementation "io.quarkus:quarkus-resteasy"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "io.quarkus:quarkus-grpc"
+    implementation "io.quarkus:quarkus-kotlin"
+
+    implementation "io.quarkus:quarkus-websockets"
+    implementation "io.smallrye.reactive:smallrye-mutiny-vertx-jdbc-client"
+    implementation "io.quarkus:quarkus-mutiny:${quarkusPlatformVersion}"
+
+    implementation "io.vertx:vertx-jdbc-client:$vertxVersion"
+
+    implementation "io.quarkus:quarkus-vertx-web:3.0.0.Beta1"
+    implementation "io.quarkus:quarkus-vertx:${quarkusPlatformVersion}"
+    
+    implementation "io.quarkus:quarkus-vertx-http"
+    implementation("org.jooq:jooq:3.19.6")
+    implementation("org.jooq:jooq-codegen-maven:3.19.6")
+    implementation("org.jooq:jooq-meta:3.19.6")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api")
+    implementation "io.quarkus:quarkus-jdbc-h2:${quarkusPlatformVersion}"
+    implementation "io.vertx:vertx-rx-java2:$vertxVersion"
+    implementation "io.quarkus:quarkus-smallrye-health"
+    implementation "io.vertx:vertx-tcp-eventbus-bridge:$vertxVersion"
+    implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
+
+    implementation("dmo.fs.utils:generate:0.0.1")
+
+    testImplementation "io.quarkus:quarkus-junit5:${quarkusPlatformVersion}"
+    testImplementation "io.rest-assured:rest-assured"
+
+    implementation("io.quarkus:quarkus-websockets-next")
+}
+
+group 'dmo.fs'
+version '3.2.0'
+
+sourceCompatibility = "17"
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+def usr = System.getProperty("user.home")
+def OS = System.getProperty("os.name").toLowerCase()
+def dir = System.getProperty("user.dir")
+
+compileJava {
+    options.encoding = "UTF-8"
+    options.compilerArgs << "-Xlint:unchecked"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    kotlinOptions.javaParameters = true
+    dependsOn compileQuarkusGeneratedSourcesJava
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    dependsOn compileKotlin
+}
+
+jar {
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}

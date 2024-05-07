@@ -1,0 +1,34 @@
+{
+  "name": "grpc-quarkus",
+  "version": "1.0.0",
+  "description": "Debug quarkus grpc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaveO-Home/dodex-quarkus.git"
+  },
+  "keywords": [
+    "java",
+    "reactivex",
+    "vertx",
+    "quarkus",
+    "mutiny",
+    "h2",
+    "javascript",
+    "dodex",
+    "gRPC",
+    "openAPI",
+    "jooq"
+  ],
+  "author": "DaveO",
+  "license": "GNU LESSER GENERAL PUBLIC LICENSE",
+  "bugs": {
+    "url": "https://github.com/DaveO-Home/grpc-quarkus/issues"
+  },
+  "homepage": "https://github.com/DaveO-Home/grpc-quarkus#readme",
+  "dependencies": {
+  }
+}
