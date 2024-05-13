@@ -4,6 +4,8 @@ Debug Quarkus gRPC.
 
 ## Execute Application
 
+**Note:** Sever.java file was missing from entry in .gitignone file. Should now compile.
+
 1. Separate terminal: execute `..../grpc-quarkus/start.envoy`
 2. Execute `..../grpc-quarkus/gradlew quarkusDev`
 3. Browse URL `localhost:8089/handicap.html`.
@@ -13,7 +15,7 @@ Debug Quarkus gRPC.
 ## Points of Possible Interest 
 
 1. src/main/proto
-2. src/main/kotlin/routes/GrpcRoutes
+2. src/main/kotlin/handicap/golf/routes/GrpcRoutes.kt
 3.
 
 ### Kotlin, gRPC Web Application
