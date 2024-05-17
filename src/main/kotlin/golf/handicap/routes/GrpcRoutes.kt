@@ -270,32 +270,38 @@ class GrpcRoutes(vertx: Vertx, router: Router) : HandicapRoutes {
             request: HandicapSetup,
             responseObserver: StreamObserver<HandicapData?>
         ) {
-            if ("Test" == request.message) {
-                LOGGER.warning("Got json from Client: " + request.json)
-            }
                 /* Testing unresolved "Request context already active when gRPC request started" issue
                    when using single server for gRPC.
                 */
-            var capturedVertxContext: io.vertx.mutiny.core.Context = Vertx.currentContext()
-//            var capturedVertxContext: io.vertx.core.Context = Vertx.currentContext().delegate
-            if (capturedVertxContext != null) {
-                val state: InjectableContext.ContextState
-                val reqContext = Arc.container().requestContext()
-                LOGGER.info("Name: -- " +reqContext.scope.name)
-                reqContext.state.contextualInstances.forEach{k,v ->
-                    LOGGER.info("K,V: -- $k -- $v")
-                }
-                if (!reqContext.isActive()) {
-                    reqContext.activate()
-                    state = reqContext.getState()
-                } else {
-//                state = null
-                    LOGGER.warning("Request context already active when gRPC request started - **Test**")
-                }
-            }
+//            var capturedVertxContext: io.vertx.mutiny.core.Context = Vertx.currentContext()
+////            var capturedVertxContext: io.vertx.core.Context = Vertx.currentContext().delegate
+//            if (capturedVertxContext != null) {
+//                val state: InjectableContext.ContextState
+//                val reqContext = Arc.container().requestContext()
+//                LOGGER.info("Name: -- " +reqContext.scope.name)
+//                reqContext.state.contextualInstances.forEach{k,v ->
+//                    LOGGER.info("K,V: -- $k -- $v")
+//                }
+//                if (!reqContext.isActive()) {
+//                    reqContext.activate()
+//                    state = reqContext.getState()
+//                } else {
+////                state = null
+//                    LOGGER.warning("Request context already active when gRPC request started - **Test**")
+//                }
+//            }
 
             var requestJson = JsonObject(request.json)
-            val golfer = requestJson.mapTo(Golfer::class.java)
+
+            if ("Test" == requestJson.getString("message")) {
+                LOGGER.warning("Got json from Client: " + request.json)
+            }
+
+            val golfer = if(requestJson.getJsonObject("json") != null) {
+                requestJson.getJsonObject("json").mapTo(Golfer::class.java)
+            } else {
+                requestJson.mapTo(Golfer::class.java)
+            }
             val cmd = request.cmd
 
             if (cmd < 0 || cmd > 8) {
