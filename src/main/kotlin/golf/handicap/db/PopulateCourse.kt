@@ -5,6 +5,7 @@ import dmo.fs.utils.ColorUtilConstants
 import golf.handicap.Course
 import golf.handicap.generated.tables.references.COURSE
 import golf.handicap.generated.tables.references.RATINGS
+import handicap.grpc.Course.*
 import handicap.grpc.*
 import io.smallrye.mutiny.Uni
 import io.vertx.core.json.JsonObject
@@ -356,7 +357,7 @@ class PopulateCourse : SqlConstants() {
                                 coursesBuilder.addCourses(courseBuilder)
                             }
 
-                            courseBuilder = handicap.grpc.Course.newBuilder()
+                            courseBuilder = newBuilder() // handicap.grpc.Course.newBuilder()
                             courseBuilder!!.id = row.getInteger(0) // COURSE_SEQ
                             courseBuilder!!.name = row.getString(1) // COURSE_NAME
                         }

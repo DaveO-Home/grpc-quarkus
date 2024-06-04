@@ -1,4 +1,12 @@
 # Changelog
+
+## [v1.0.4](https://github.com/DaveO-Home/grpc-quarkus/tree/v1.0.4) (2024-06-04)
+
+[Full Changelog](https://github.com/DaveO-Home/grpc-vertx/compare/v1.0.3...v1.0.4)
+
+* Upgraded Kotlin and Kotlin plugin to 2.0.0
+* Upgraded Gradle to 8.8
+
 ## [v1.0.3](https://github.com/DaveO-Home/grpc-quarkus/tree/v1.0.3) (2024-05-17)
 
 [Full Changelog](https://github.com/DaveO-Home/grpc-vertx/compare/v1.0.2...v1.0.3)

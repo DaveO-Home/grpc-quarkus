@@ -4,6 +4,8 @@ Debug Quarkus gRPC.
 
 ## Execute Application
 
+**Note:** Kotlin & Kotlin plugin are upgraded to 2.0.0
+
 1. Download `https://github.com/DaveO-Home/grpc-quarkus`
 2. cd to `.../grpc-quarkus`
 3. execute `./gradlew quarkusDev`
